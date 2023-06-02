@@ -1,6 +1,18 @@
 
+const arregloNombres = [];
 const arregloMaterias = [];
-const arregloPromedios = [];
+
+class Materia {
+    constructor(nombre,promedio,aprobado){
+        this.nombre = nombre;
+        this.promedio = promedio;
+        this.aprobado = aprobado;
+    }
+    volverString(){
+        let aux = "En la materia " + this.nombre + " obtuvo un promedio de " + this.promedio + " por lo que está " + this.aprobado + ". \n";
+        return aux;
+    }
+}
 
 function promedio(nota1,nota2,nota3){
     if (nota3 != 0){
@@ -39,37 +51,39 @@ function cadaMateria (nombreMateria){
     }
     if (((nota1 <= 10)&&(nota2 <= 10)&&(nota3 <= 10)) && ((nota1 >= 0)&&(nota2 >= 0)&&(nota3 >= 0))){
         resultado = promedio(nota1,nota2,nota3);
-        arregloPromedios.push(resultado);
+        let aprobacion;
+        if (resultado > 4) {
+            aprobacion = "aprobado";
+        } else {
+            aprobacion = "desaprobado";
+        }
+        const materiaNueva = new Materia(nombreMateria,resultado,aprobacion);
+        arregloMaterias.push(materiaNueva);
     }
     else{
         alert("notas ingresadas incorrectas");
     }
 }
-function armarStringMaterias (nombreMateria, promedio, salidaMateria){
-    let aprobacion;
-    if (promedio > 4) {
-        aprobacion = "aprobado";
-    } else {
-        aprobacion = "desaprobado";
+function armarStringMaterias (arregloMaterias){
+    let salidaMaterias;
+    for (let i=0; i < arregloMaterias.length;i++) {
+        salidaMaterias += arregloMaterias[i].volverString();
     }
-    salidaMateria = salidaMateria + "En la materia " + nombreMateria + " su promedio es " + promedio.toFixed(2) + ", por lo tanto está " + aprobacion +"." + "\n";
-    return salidaMateria;
+    return salidaMaterias;
 }
 
 
 alert("Agrege sus materias (ingrese listo para dejar de ingresar)");
 let materiaNom = prompt("Ingrese el nombre de la materia:");
 while (materiaNom.toUpperCase() != "LISTO"){
-    arregloMaterias.push(materiaNom);
+    arregloNombres.push(materiaNom);
     materiaNom = prompt("Ingrese el nombre de la materia: (recuerde ingresar listo para finalizar el ingreso)");
 }
 let salida = "";
-for (i=0;i<arregloMaterias.length;i++){
-    cadaMateria(arregloMaterias[i]);
+for (i=0;i<arregloNombres.length;i++){
+    cadaMateria(arregloNombres[i]);
 }
-for (i=0;i<arregloMaterias.length;i++){
-    salida = armarStringMaterias(arregloMaterias[i],arregloPromedios[i],salida);
-}
+salida = armarStringMaterias(arregloMaterias);
 alert(salida);
 
 // faltaria usar busqueda para encontrar mi mejor materia, y agregar aquellas que desaprobe a otro arreglo.
