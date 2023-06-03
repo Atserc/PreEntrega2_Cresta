@@ -9,7 +9,7 @@ class Materia {
         this.aprobado = aprobado;
     }
     volverString(){
-        let aux = "En la materia " + this.nombre + " obtuvo un promedio de " + this.promedio + " por lo que está " + this.aprobado + ". \n";
+        let aux = "En la materia " + this.nombre + " obtuvo un promedio de " + this.promedio.toFixed(2) + " por lo que está " + this.aprobado + ". \n";
         return aux;
     }
 }
@@ -64,27 +64,55 @@ function cadaMateria (nombreMateria){
         alert("notas ingresadas incorrectas");
     }
 }
+
 function armarStringMaterias (arregloMaterias){
-    let salidaMaterias;
+    let salidaMaterias = "";
     for (let i=0; i < arregloMaterias.length;i++) {
         salidaMaterias += arregloMaterias[i].volverString();
     }
     return salidaMaterias;
 }
 
+function buscarDesaprobadas(arregloMaterias){
+    const materiasDesaprobadas = arregloMaterias.filter( (elem) => elem.promedio < 4);
+    return materiasDesaprobadas;
+}
 
+function armarStringDesaprobadas (arregloDesaprobadas){
+    let = salidaDesaprobadas = "\n Usted desaprobo las siguientes materias: ";
+    if (arregloDesaprobadas.length != 0){
+        for (const matDesaprobada of arregloDesaprobadas) {
+            salidaDesaprobadas += matDesaprobada.nombre + ", ";
+        }
+        salidaDesaprobadas = salidaDesaprobadas.slice(0,-2);
+        salidaDesaprobadas += ".";
+    } else{
+        salidaDesaprobadas = "Usted no desaprobro ninguna materia."
+    }
+    return salidaDesaprobadas;
+}
+
+// Parte principal
+
+// Recibo los nombres de las materias a cargar
 alert("Agrege sus materias (ingrese listo para dejar de ingresar)");
 let materiaNom = prompt("Ingrese el nombre de la materia:");
 while (materiaNom.toUpperCase() != "LISTO"){
     arregloNombres.push(materiaNom);
     materiaNom = prompt("Ingrese el nombre de la materia: (recuerde ingresar listo para finalizar el ingreso)");
 }
-let salida = "";
-for (i=0;i<arregloNombres.length;i++){
-    cadaMateria(arregloNombres[i]);
-}
-salida = armarStringMaterias(arregloMaterias);
-alert(salida);
 
-// faltaria usar busqueda para encontrar mi mejor materia, y agregar aquellas que desaprobe a otro arreglo.
-//agregar todo lo de arriba al string
+// Armo el string de los objetos "materia" con sus nombres, notas y estado
+for (const unNombre of arregloNombres) {
+    cadaMateria(unNombre);
+}
+
+// Creo el String
+let salida = "";
+salida = armarStringMaterias(arregloMaterias);
+
+// Busco las desaprobadas y las agrego al String
+let arregloDesaprobadas = buscarDesaprobadas(arregloMaterias);
+salida += armarStringDesaprobadas(arregloDesaprobadas);
+
+alert(salida);
